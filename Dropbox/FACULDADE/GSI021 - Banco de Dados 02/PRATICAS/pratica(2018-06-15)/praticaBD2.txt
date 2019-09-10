@@ -1,0 +1,20 @@
+CONEXÃO 1
+
+EX1
+--UPDATE aluno set nome='Jose Raimundo Silva' WHERE id = 2;
+--rollback;
+--commit;
+
+
+D)
+--select * from aluno where NOME LIKE 'J%';
+
+
+
+CONEXÃO 2
+
+--select * from aluno;
+
+D)
+--INSERT INTO aluno values(6,'Jose Ricardo Maria');
+--select * from aluno where NOME LIKE 'J%';

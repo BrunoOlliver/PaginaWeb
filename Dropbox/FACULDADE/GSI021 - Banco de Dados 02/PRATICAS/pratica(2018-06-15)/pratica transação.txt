@@ -1,0 +1,42 @@
+Exercicio 1
+
+D) O comportamento de "Leitura Suja" não ocorre, pois uma vez feita o Update na Conexão 1, a alteração não é percebida na Conexão 2. Assim ao fazer o Rollback na Conexão 1 é possível então ver o estado anterior ao Update nesta conexão, mas já a Conexão 2 permanece sem ser afetada. Estando de acordo com o nível de isolamento do Read Committed.
+----------------------------------------------------------------------
+Exercicio 2
+D)O comportamente encontrado aqui é o de "Leitura Não-Repetitivel", onde uma vez feita atualização na Conexão 1 e em seguida efetuado o commit, as mudanças também são aplicadas na Conexão 2. 
+----------------------------------------------------------------------
+Exercicio 3
+
+Conexao 1: efetua uma consulta seguindo uma condição na cláusula WHERE, retorando todos os nomes iniciados por 'J':
+select * from aluno where NOME LIKE 'J%';
+
+Conexao 2: insere um valor que irá satisfazer a condição da consulta anterior:
+INSERT INTO aluno values(6,'Jose Ricardo Maria');
+
+Conexao 1: efetua novamente a consulta:
+select * from aluno where NOME LIKE 'J%';
+
+Conclusão: A "Leitura Fantasma" ocorre apenas se ao inserir na Conexão 2 for efetuado um commit. Caso contrário ela não ocorre, fazendo com que a Conexão 1 permaneça sem enxergar a mudança efetuada pela Conexão 2.
+----------------------------------------------------------------------
+Exercicio 4
+
+Passo 1: ocorreu normalmente na conexão 1 sem interferir na  conexão 2.
+Passo 2: Conexão 2 efetua o update sem considerar o update da Conexão 1.
+Passo 3: Deadlock é detectado na Conexão 2 ao tentar fazer o update já efetuado na Conexão 1.
+Passo 4: Após fazer um novo update com Commit na Conexão 1, a Conexão 2 recebe as mudanças feitas pela Conexão 1, gerando um erro no update do "passo 3", aderindo as mudanças da Conexão 1 e  efeturando o Commit sem exito.
+
+Sendo assim é possível concluir que não é possível efetuar um commit após identificar um deadlock. A conexão fica a espera de que os recursos sejam concluidos na transasão concorrente até que possa concluir seu commit.
+
+Exercicio 5
+Leitura Não-repetitiva:
+Conexão 1: select * from aluno;
+Conexão 2: update aluno set nome = 'Armando Silva Nascimento' where id = 1;commit;
+Conexão 1: select * from aluno;
+
+Leitura Fantasma:
+Conexão 1: select * from aluno where NOME LIKE 'A%';
+Conexão 2: INSERT INTO aluno values(7,'Armando Augusto Pereira');
+Conexão 1: select * from aluno where NOME LIKE 'A%';
+
+
+
